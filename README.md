@@ -6,3 +6,19 @@ Custom (scuffed) ansible roles for the [ludus project](https://gitlab.com/badsec
 
 - ludus_child_domain_join: Join a machine to the child domain created from `ludus_child_domain`, since ludus's backend does not support domain/controllers created with 3rd party ansible roles 
 
+## Installation 
+
+```bash
+cd ./ludus_ansible_roles 
+export LUDUS_API_KEY='<your-ludus-key>'
+ludus ansible role add -d ./ludus_child_domain_join/
+ludus ansible role add -d ./ludus_child_domain/ 
+```
+
+## Updating 
+
+- Whenever you modify/update the ansible roles, ensure to remove and re-add them to ludus. For example: 
+
+```bash
+ludus ansible role rm ludus_child_domain_join/ ; ludus ansible role add -d ./ludus_child_domain_join/
+```

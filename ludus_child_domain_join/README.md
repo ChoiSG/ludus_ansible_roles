@@ -4,7 +4,7 @@ Ansible role to join a machine to the child domain created from the `ludus_child
 
 ## Example 
 
-```ansible
+```yaml
 ludus: 
 
   # Create parent domain using ludus's primary-dc role...

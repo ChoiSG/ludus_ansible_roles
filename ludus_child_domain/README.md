@@ -4,7 +4,7 @@ Ansible role to create a child domain and domain controller based on the parent 
 
 ## Example 
 
-```ansible
+```yaml
 ludus: 
   
   # Create parent domain and domain controller first using ludus's primary-dc role
