@@ -1,0 +1,28 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: ludus_child_domain_join
+  author: choi
+  description: Join a machine to a child domain specifically for ludus_child_domain
+  company: choi
+  license: GPLv3
+  min_ansible_version: "2.10"
+  platforms:
+    - name: Windows
+      versions:
+        - "2012R2"
+        - "2016"
+        - "2019"
+        - "2022"
+
+  galaxy_tags:
+    - windows
+    - security
+    - active directory
+    - server
+
+collections:
+  - ansible.windows
+  - community.windows
+  - community.general

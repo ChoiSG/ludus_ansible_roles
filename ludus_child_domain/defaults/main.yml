@@ -1,0 +1,10 @@
+---
+# Hardcoding for now...? 
+parent_domain_name: "rr.local"              # CHANGE ME IN YOUR LUDUS CONFIG
+new_domain_name: "dev"                      # CHANGE ME IN YOUR LUDUS CONFIG
+parent_ea_user: "example.com\\administrator" # CHANGE ME IN YOUR LUDUS CONFIG
+parent_ea_password: "password"              # CHANGE ME IN YOUR LUDUS CONFIG
+parent_dc_ip: "10.2.20.10"                  # CHANGE ME IN YOUR LUDUS CONFIG
+current_host_ip: "10.2.30.10"               # CHANGE ME IN YOUR LUDUS CONFIG
+SafeModeAdministratorPassword: "Password123!"
+DomainMode: "WinThreshold"

@@ -1,0 +1,7 @@
+---
+# Hardcoding 
+dns_domain_name: "dev.test.local"
+dc_ip: "10.2.30.10" 
+domain_admin_user: "domainadmin@dev.test.local"
+domain_admin_password: "password"
+#domain_ou_path: "OU=Windows,OU=Servers,DC=dev,DC=test,DC=local" # Commenting out for now 

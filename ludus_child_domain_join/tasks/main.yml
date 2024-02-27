@@ -1,0 +1,33 @@
+---
+- name: Configure DNS to the child domain controller's ip address
+  win_dns_client:
+    adapter_names: "*"
+    ipv4_addresses:
+      - "{{ dc_ip }}"
+
+- name: Attempt to domain join the machine into the child domain
+  block:
+    - name: Domain join the machine into the child domain 
+      microsoft.ad.membership:
+        dns_domain_name: "{{ dns_domain_name }}"
+        domain_admin_user: "{{ domain_admin_user }}"
+        domain_admin_password: "{{ domain_admin_password }}"
+        state: domain
+        reboot: true 
+      register: domain_join_result
+      until: domain_join_result is succeeded or domain_join_result.retries == 10
+      retries: 10
+      delay: 60
+      ignore_errors: yes
+
+  rescue:
+    - name: Domain join failed after retries
+      ansible.builtin.fail:
+        msg: "Domain join failed after multiple retries"
+      when: domain_join_result is defined and domain_join_result.failed
+
+- name: Install RSAT AD Tools
+  win_feature:
+    name: "RSAT-ADDS"
+    state: present
+    include_management_tools: true
