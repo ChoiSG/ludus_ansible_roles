@@ -15,7 +15,7 @@
         state: domain
         reboot: true 
       register: domain_join_result
-      until: domain_join_result is succeeded or domain_join_result.retries == 10
+      until: domain_join_result is succeeded
       retries: 10
       delay: 60
       ignore_errors: yes
