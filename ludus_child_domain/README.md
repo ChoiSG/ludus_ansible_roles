@@ -2,6 +2,9 @@
 
 Ansible role to create a child domain and domain controller based on the parent domain information. 
 
+## WARNING 
+Child domains created with this module (`ludus_child_domain`) module will NOT by default create the `domainadmin` user account. Make sure to use the default `administrator` username when you need to specify the domain administrator for the child domain created with this module. 
+
 ## Example 
 
 ```yaml
