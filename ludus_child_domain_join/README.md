@@ -2,6 +2,10 @@
 
 Ansible role to join a machine to the child domain created from the `ludus_child_domain` ansible role. 
 
+## WARNING 
+Child domains created with the `ludus_child_domain` module in this GitHub repository will by default NOT create the `domainadmin` user account. Make sure to specify `administrator` as the domain administrator username when using this module to domain join into the child domain.
+
+
 ## Example 
 
 ```yaml
@@ -24,7 +28,7 @@ ludus:
     role_vars:
       parent_domain_name: "test.local"
       new_domain_name: "dev"
-      parent_ea_user: "test.local\\administrator"
+      parent_ea_user: "test.local\\domainadmin" # ludus default domainadmin user account  
       parent_ea_password: "password"
       parent_dc_ip: "10.2.20.20"
       current_host_ip: "10.2.30.10"
@@ -44,6 +48,6 @@ ludus:
     role_vars:
       dc_ip: "10.2.30.10"
       dns_domain_name: "dev.test.local"
-      domain_admin_user: "administrator@dev.test.local"  # <user>@<domain> format 
+      domain_admin_user: "administrator@dev.test.local"  # <user>@<domain> format. Use `administrator`, since ludus's domainadmin default user is not created with ludus_child_domain 
       domain_admin_password: "password"
 ```
