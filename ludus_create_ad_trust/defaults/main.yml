@@ -1,0 +1,11 @@
+---
+local_domain: "domainA.local"
+remote_domain: "domainB.local"
+local_dns_server: "192.168.1.5"
+remote_dns_server: "192.168.1.10"
+local_admin_user: "domainadmin@domainA.local"
+local_admin_password: "password"
+remote_admin_user: "domainadmin@domainB.local"
+remote_admin_password: "password"
+trust_direction: "Bidirectional" # Bidirectional, Inbound, Outbound
+replication_scope: "Forest" # Forest, Domain 

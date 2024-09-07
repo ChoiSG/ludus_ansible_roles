@@ -1,0 +1,28 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: ludus_create_ad_trust
+  author: choi
+  description: Create inbound, outbound, or bi-directional trust between two domains
+  company: choi
+  license: GPLv3
+  min_ansible_version: "2.10"
+  platforms:
+    - name: Windows
+      versions:
+        - "2012R2"
+        - "2016"
+        - "2019"
+        - "2022"
+
+  galaxy_tags:
+    - windows
+    - security
+    - active directory
+    - server
+
+collections:
+  - ansible.windows
+  - community.windows
+  - community.general
