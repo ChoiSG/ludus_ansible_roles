@@ -1,3 +1,7 @@
+# DISCLAIMER 
+
+THIS MODULE IS CREATED FOR MY HOMELAB. IT IS NOT TESTED AND WILL NOT WORK ON YOURS. 
+
 # ludus_create_ad_trust 
 
 Ansible role to create AD trust relationship between two domains. Create Bidirectional, inbound, or outbound trust relationship. 

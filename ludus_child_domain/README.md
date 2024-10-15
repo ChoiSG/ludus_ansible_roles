@@ -3,7 +3,22 @@
 Ansible role to create a child domain and domain controller based on the parent domain information. 
 
 ## WARNING 
-Child domains created with this module (`ludus_child_domain`) module will NOT by default create the `domainadmin` user account. Make sure to use the default `administrator` username when you need to specify the domain administrator for the child domain created with this module. 
+1. Child domains created with this module (`ludus_child_domain`) module will NOT by default create the `domainadmin` user account. Make sure to use the default `administrator` username when you need to specify the domain administrator for the child domain created with this module. 
+
+2. Even with 
+```
+- name: Configure DNS to include parent dc ip 
+  win_dns_client:
+    adapter_names: "*"
+    ipv4_addresses:
+      - "{{ parent_dc_ip }}"
+      - "{{ current_host_ip }}"
+```
+, the DNS client gets populated with `10.{{rangeid}}.{{vlan}}.254`, which is the default ludus Adguard DNS server. Ensure to update this with 
+
+```powershell
+Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ("<parent_dc_ip>", "<current_host_ip>")
+```
 
 ## Example 
 
