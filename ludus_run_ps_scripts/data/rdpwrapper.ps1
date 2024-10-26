@@ -27,3 +27,6 @@ public class Keyboard
 [Keyboard]::SendEnter()
 
 Start-Process -FilePath "$env:ProgramFiles\RDP Wrapper\autoupdate.bat" -Verb RunAs -PassThru
+
+# Waiting for autoupdate.bat above to finish 
+Start-Sleep 20
