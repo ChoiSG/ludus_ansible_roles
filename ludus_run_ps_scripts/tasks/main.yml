@@ -1,26 +1,33 @@
 ---
-- name: Upload the PowerShell script to the target machine
+- name: Upload each PowerShell script to the target machine
   ansible.builtin.template:
-    src: "../data/{{ script_name }}"     # Local path to the script
-    dest: "C:\\{{ script_name }}"   # Destination path on the Windows machine
+    src: "../data/{{ item }}"     
+    dest: "C:\\{{ item }}"        
+  loop: "{{ script_name | list }}"   # Force script_name to be treated as a list
 
-- name: Run the uploaded PowerShell script
+- name: Run each uploaded PowerShell script
   win_shell: |
-    powershell.exe -ExecutionPolicy Bypass -File C:\{{ script_name }}
+    powershell.exe -ExecutionPolicy Bypass -File C:\{{ item }}
   args:
     executable: powershell.exe
   register: powershell_output
+  loop: "{{ script_name | list }}"
+  loop_control:
+    label: "{{ item }}"  
 
-- name: Display stdout of {{ script_name }}
+- name: Display stdout of each script
   ansible.builtin.debug:
-    msg: "{{ powershell_output.stdout }}"
+    msg: "Output of {{ item }}: {{ powershell_output.stdout }}"
+  loop: "{{ script_name | list }}"
 
-- name: Display stderr of {{ script_name }}
+- name: Display stderr of each script if any
   ansible.builtin.debug:
-    msg: "{{ powershell_output.stderr }}"
+    msg: "Error in {{ item }}: {{ powershell_output.stderr }}"
   when: powershell_output.stderr != ""
+  loop: "{{ script_name | list }}"
 
-- name: Delete the PowerShell script after execution
+- name: Delete each PowerShell script after execution
   ansible.builtin.win_file:
-    path: "C:\\{{ script_name }}"
+    path: "C:\\{{ item }}"
     state: absent
+  loop: "{{ script_name | list }}"
