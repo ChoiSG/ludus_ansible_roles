@@ -2,7 +2,7 @@
 - name: Upload the PowerShell script to the target machine
   ansible.builtin.template:
     src: "../data/{{ script_name }}"     # Local path to the script
-    dest: "C:\{{ script_name }}"   # Destination path on the Windows machine
+    dest: "C:\\{{ script_name }}"   # Destination path on the Windows machine
 
 - name: Run the uploaded PowerShell script
   win_shell: |
@@ -22,5 +22,5 @@
 
 - name: Delete the PowerShell script after execution
   ansible.builtin.win_file:
-    path: "C:\{{ script_name }}"
+    path: "C:\\{{ script_name }}"
     state: absent
