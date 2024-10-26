@@ -59,3 +59,10 @@
   
 - name: Ensure the server is rebooted if required
   win_reboot:
+
+- name: Configure DNS to include parent dc ip No.2
+  win_dns_client:
+    adapter_names: "*"
+    ipv4_addresses:
+      - "{{ parent_dc_ip }}"
+      - "{{ current_host_ip }}"
