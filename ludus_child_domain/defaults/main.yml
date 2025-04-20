@@ -1,10 +1,12 @@
 ---
 # Hardcoding for now...? 
-parent_domain_name: "rr.local"              # CHANGE ME IN YOUR LUDUS CONFIG
-new_domain_name: "dev"                      # CHANGE ME IN YOUR LUDUS CONFIG
-parent_ea_user: "example.com\\administrator" # CHANGE ME IN YOUR LUDUS CONFIG
-parent_ea_password: "password"              # CHANGE ME IN YOUR LUDUS CONFIG
-parent_dc_ip: "10.2.20.10"                  # CHANGE ME IN YOUR LUDUS CONFIG
-current_host_ip: "10.2.30.10"               # CHANGE ME IN YOUR LUDUS CONFIG
-SafeModeAdministratorPassword: "Password123!"
-DomainMode: "WinThreshold"
+dns_domain_name: "test.dev.raccoon"
+domain_admin_user: "administrator@dev.raccoon"
+domain_admin_password: "password"
+safe_mode_password: "password"
+parent_dc_ip: "1.1.1.1"
+current_host_ip: "2.2.2.2"
+create_dns_delegation: true 
+domain_mode: "WinThreshold"
+reboot: true 
+install_dns: true 

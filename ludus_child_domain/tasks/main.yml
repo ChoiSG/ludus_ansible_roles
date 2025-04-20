@@ -1,26 +1,4 @@
 ---
-# # This works, but fails since the ludus is not aware of the new local admin user & password that 
-# # is required to carry out further ansible tasks below 
-# - name: Remove forest root domain created by ludus 
-#   win_shell: |
-#     net user localuser password /add 
-#     $password = ConvertTo-SecureString 'password' -AsPlainText -Force
-#     Uninstall-ADDSDomainController -DemoteOperationMasterRole -LocalAdministratorPassword $password  -ForceRemoval -Confirm:$false 
-#     net user localuser password /add 
-#     Set-Item WSMan:\localhost\Service\Auth\Basic -Value $true
-#     Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled False
-#   args:
-#     executable: powershell.exe
-#   # become: yes
-#   # become_method: runas
-#   # vars:
-#   #   ansible_become_user: "dev.test.local\\administrator"
-#   #   ansible_become_password: "Password123!"
-#   #   ansible_become_method: runas
-#   #   ansible_become_flags: logon_type=new_credentials logon_flags=netcredentials_only
-
-# - name: Ensure the server is rebooted if required
-#   win_reboot:
 - name: Configure DNS to include parent dc ip 
   win_dns_client:
     adapter_names: "*"
@@ -28,41 +6,12 @@
       - "{{ parent_dc_ip }}"
       - "{{ current_host_ip }}"
 
-- name: Install ADDS 
-  win_feature: 
-    name: AD-Domain-Services
-    include_management_tools: yes
-    include_sub_features: yes
-    state: present 
-
-- name: Import ADDSDeployment module 
-  win_shell: Import-Module ADDSDeployment 
-
-- name: Create ADDS and promote child DC with DNS delegation and Safe Mode Admin Password
-  win_shell: |
-    $credential = New-Object System.Management.Automation.PSCredential ('{{ parent_ea_user }}', (ConvertTo-SecureString '{{ parent_ea_password }}' -AsPlainText -Force))
-
-    Install-ADDSDomain `
-        -Credential $credential `
-        -SafeModeAdministratorPassword (ConvertTo-SecureString -AsPlainText -String "{{ SafeModeAdministratorPassword }}" -Force) `
-        -NewDomainName "{{ new_domain_name }}" `
-        -ParentDomainName "{{ parent_domain_name }}" `
-        -InstallDns:$true `
-        -CreateDnsDelegation:$true `
-        -LogPath "C:\Windows\NTDS" `
-        -SysvolPath "C:\Windows\SYSVOL" `
-        -NoRebootOnCompletion:$false `
-        -DomainMode {{ DomainMode }} `
-        -Force:$true 
-  args:
-    creates: C:\Windows\NTDS
-  
-- name: Ensure the server is rebooted if required
-  win_reboot:
-
-- name: Configure DNS to include parent dc ip No.2
-  win_dns_client:
-    adapter_names: "*"
-    ipv4_addresses:
-      - "{{ parent_dc_ip }}"
-      - "{{ current_host_ip }}"
+- name: Create a child domain
+  microsoft.ad.domain_child:
+    dns_domain_name: "{{ dns_domain_name }}"
+    domain_admin_user: "{{ domain_admin_user }}"
+    domain_admin_password: "{{ domain_admin_password }}"
+    safe_mode_password: "{{ safe_mode_password }}"
+    create_dns_delegation: "{{ create_dns_delegation }}"
+    reboot: "{{ reboot }}"
+    install_dns: "{{ install_dns }}" 

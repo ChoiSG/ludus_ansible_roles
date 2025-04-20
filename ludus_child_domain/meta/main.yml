@@ -2,7 +2,7 @@
 dependencies: []
 
 galaxy_info:
-  role_name: ludus_child_domain
+  role_name: ludus_child_domain_reborn
   author: choi
   description: Create a child domain and child domain controller
   company: choi
@@ -23,6 +23,7 @@ galaxy_info:
     - server
 
 collections:
+  - ansible.ad
   - ansible.windows
   - community.windows
   - community.general

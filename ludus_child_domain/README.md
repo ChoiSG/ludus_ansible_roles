@@ -1,60 +1,61 @@
-# Ludus_Child_Domain
+# DISCLAIMER 
 
-Ansible role to create a child domain and domain controller based on the parent domain information. 
+THIS MODULE IS CREATED FOR MY HOMELAB. IT IS NOT TESTED AND WILL NOT WORK ON YOURS. 
 
-## WARNING 
-1. Child domains created with this module (`ludus_child_domain`) module will NOT by default create the `domainadmin` user account. Make sure to use the default `administrator` username when you need to specify the domain administrator for the child domain created with this module. 
+# ludus_child_domain
 
-2. Even with 
+Uses https://docs.ansible.com/ansible/11/collections/microsoft/ad/domain_child_module.html to create child domain and domain controller 
+
+## Installation  
+- This module requries `microsoft.ad.child_domain` module, which was released on 1.6. Since ludus uses 1.4.0, we need to update/insteall the newer version of `microsoft.ad` collection first. 
 ```
-- name: Configure DNS to include parent dc ip 
-  win_dns_client:
-    adapter_names: "*"
-    ipv4_addresses:
-      - "{{ parent_dc_ip }}"
-      - "{{ current_host_ip }}"
+ludus ansible collections add microsoft.ad --version 1.8.1
 ```
-, the DNS client gets populated with `10.{{rangeid}}.{{vlan}}.254`, which is the default ludus Adguard DNS server. Ensure to update this with 
 
-```powershell
-Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ("<parent_dc_ip>", "<current_host_ip>")
+- Then, install this role:
+```
+git clone 
+cd ./ludus_ansible_roles
+ludus ansible role add -d ./ludus_child_domain
 ```
 
 ## Example 
+- Parent Domain: example.local 
+- Child Domain: kr.example.local
 
 ```yaml
 ludus: 
-  
-  # Create parent domain and domain controller first using ludus's primary-dc role
-  - vm_name: "{{ range_id }}-Internal-VLAN20-pdc01"
-    hostname: "pdc01"
-    template: win2016-server-x64-template
-    vlan: 20
-    ip_last_octet: 20
-    ram_gb: 4
+  - vm_name: "dc01-example-local"
+    hostname: "dc01"
+    template: win2022-rapt
+    vlan: 10 
+    ip_last_octet: 10 
+    ram_gb: 2
     cpus: 1
     windows:
-      sysprep: true 
+      sysprep: true
     domain:
-      fqdn: test.local
-      role: primary-dc
+      fqdn: example.local
+      role: primary-dc 
 
-  # Create Child domain/controller created with ludus_child_domain 
-  - vm_name: "{{ range_id }}-Internal-VLAN30-devdc01"
-    hostname: "devdc01"
-    template: win2016-server-x64-template
-    vlan: 30
-    ip_last_octet: 10
-    ram_gb: 4
+  - vm_name: "kdc01-kr-example-local"
+    hostname: "kdc01"
+    template: win2022-rapt
+    vlan: 20 
+    ip_last_octet: 10 
+    ram_gb: 2
     cpus: 1
     windows:
-      sysprep: true 
+      sysprep: true
     roles:
-      - ludus_child_domain
+      - ludus_child_domain_reborn
     role_vars:
-      parent_domain_name: "test.local"
-      new_domain_name: "dev"
-      parent_ea_user: "test.local\\administrator"
-      parent_ea_password: "password"
-      parent_dc_ip: "10.2.20.20"
-      current_host_ip: "10.2.30.10"
+      dns_domain_name: kr.example.local
+      domain_admin_user: domainadmin@example.local
+      domain_admin_password: password
+      safe_mode_password: password
+      create_dns_delegation: true 
+      parent_dc_ip: "10.2.10.10"
+      current_host_ip: "10.2.20.10"
+      reboot: true
+```

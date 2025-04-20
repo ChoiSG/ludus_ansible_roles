@@ -32,6 +32,9 @@
     state: present
     include_management_tools: true
 
+- name: Ensure the server is rebooted if required
+  win_reboot:
+
 - name: Configure DNS to the child domain controller's ip address 2
   win_dns_client:
     adapter_names: "*"
